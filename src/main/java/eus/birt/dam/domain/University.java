@@ -3,13 +3,12 @@ package eus.birt.dam.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +28,8 @@ public class University extends BaseEntity{
 	@Embedded
 	private Address address;
 	
-	@OneToMany
-	@JoinColumn (name = "university_id")
+	@OneToMany (mappedBy="university", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	//se excluye CascadeType.REMOVE
 	List <Student> students = new ArrayList<>();
 
 	public University(String name) {

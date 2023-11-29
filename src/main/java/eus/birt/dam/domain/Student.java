@@ -6,18 +6,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,18 +52,19 @@ public class Student extends BaseEntity{
 	@Column (name="birthdate")
 	private LocalDate birthdate;
 	
-	@OneToOne(mappedBy="student")
-	private Tuition tuition;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn (name="tuition_id")
+	private Tuition tuition;  
+	
 	
 	@ManyToOne
 	@JoinColumn (name = "university_id")
 	private University university;
 	
-	@ManyToMany 
+	@ManyToMany (cascade= {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name="student_course", joinColumns=@JoinColumn(name="student_id"), 
 			inverseJoinColumns=@JoinColumn(name="course_id"))
 	private Set<Course> courses = new HashSet<>();
-
 
 	public Student(String firstName, String lastName, String email) {
 		this.firstName = firstName;

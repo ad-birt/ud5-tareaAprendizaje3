@@ -2,8 +2,6 @@ package eus.birt.dam.bootstrap;
 
 import java.time.LocalDate;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,6 +15,7 @@ import eus.birt.dam.repository.CourseRepository;
 import eus.birt.dam.repository.StudentRepository;
 import eus.birt.dam.repository.TuitionRepository;
 import eus.birt.dam.repository.UniversityRepository;
+import jakarta.transaction.Transactional;
 
 
 @Component
@@ -31,7 +30,7 @@ public class BootStrapData implements CommandLineRunner{
 	@Autowired
 	private CourseRepository courseRepository;
 	
-	@Transactional //Metodo con única transaccion, evita: object references an unsaved transient instance
+	@Transactional //Método con única transaccion, evita: object references an unsaved transient instance
 	@Override
 	public void run(String... arg0) throws Exception {
 		Student student1 = new Student("Jill", "Admin","as@s");
@@ -47,7 +46,6 @@ public class BootStrapData implements CommandLineRunner{
 		university1.setAddress(address1);
 		
 		student1.setTuition(tuition1);
-		tuition1.setStudent(student1);
 		
 		student1.setUniversity(university1);
 		university1.getStudents().add(student1);
